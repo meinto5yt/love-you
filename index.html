@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Romantic Music Page</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+}
+
+:root{
+    --bg:#fff2f6;
+    --card:rgba(255, 255, 255, 0.55);
+    --card-border:rgba(255, 182, 193, 0.4);
+    --purple:#b172ff;
+    --pink:#ff6fa9;
+    --white:#ffffff;
+    --glass:rgba(255, 255, 255, 0.25);
+    --shadow:0 15px 45px rgba(255, 105, 180, 0.12);
+    --text-color:#654355;
+    --text-muted:#947185;
+}
+
+body{
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 50%, #ffd1dc 100%);
+    overflow-x:hidden;
+    min-height:100vh;
+    font-family:'Poppins',sans-serif;
+    color: var(--text-color);
+    position:relative;
+    overflow: auto;
+}
+
+/* Floating Heart Particles */
+#particles{
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+
+/* Navbar */
+nav{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    padding:24px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:999;
+    background:rgba(255, 240, 245, 0.4);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(255, 182, 193, 0.3);
+}
+
+.logo{
+    font-family:'Cormorant Garamond', serif;
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:2px;
+    color: var(--text-color);
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:35px;
+}
+
+nav ul li a{
+    text-decoration:none;
+    color: var(--text-color);
+    font-weight:500;
+    transition:.4s;
+    position:relative;
+}
+
+nav ul li a::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-7px;
+    width:0;
+    height:2px;
+    background:linear-gradient(to right,var(--pink),var(--purple));
+    transition:.4s;
+}
+
+nav ul li a:hover::after{
+    width:100%;
+}
+
+nav ul li a:hover{
+    color: var(--pink);
+}
+
+/* Main Container */
+.container{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:120px 20px 60px;
+}
+
+.music-card{
+    width:100%;
+    max-width:900px;
+    background: var(--card);
+    border:1px solid var(--card-border);
+    border-radius:35px;
+    padding:45px;
+    backdrop-filter:blur(30px);
+    box-shadow:var(--shadow);
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.music-card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:
+    radial-gradient(circle at top left,
+    rgba(255, 182, 193, 0.4),
+    transparent 45%);
+    pointer-events:none;
+}
+
+.music-header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    justify-content:flex-start;
+    margin-bottom:25px;
+    font-size:22px;
+    font-weight:600;
+    color: var(--text-color);
+}
+
+.music-header span{
+    color: var(--text-color);
+}
+
+.line{
+    width:100%;
+    height:1px;
+    background:rgba(255, 182, 193, 0.4);
+    margin-bottom:35px;
+}
+
+.image-wrapper{
+    position:relative;
+    width:240px;
+    height:240px;
+    margin:auto;
+}
+
+.glow{
+    position:absolute;
+    inset:-20px;
+    border-radius:50%;
+    background:radial-gradient(circle,
+    rgba(255, 105, 180, 0.35),
+    rgba(255, 182, 193, 0.1),
+    transparent);
+    filter:blur(35px);
+}
+
+.profile-img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid rgba(255,255,255,0.7);
+    box-shadow:
+    0 0 15px rgba(255, 105, 180, 0.2),
+    0 0 35px rgba(255, 182, 193, 0.3);
+    transition:transform .3s ease;
+}
+
+.rotating{
+    animation:spin 12s linear infinite;
+}
+
+@keyframes spin{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.song-title{
+    margin-top:30px;
+    font-size:34px;
+    font-weight:700;
+    letter-spacing:1px;
+    color: var(--text-color);
+}
+
+.song-subtitle{
+    margin-top:10px;
+    color: var(--text-muted);
+    font-size:17px;
+}
+
+.controls{
+    margin-top:35px;
+}
+
+.play-btn{
+    width:90px;
+    height:90px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    background:linear-gradient(
+    135deg,
+    #ff7ebb,
+    #ff4081
+    );
+    color:white;
+    font-size:35px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+    transition:.3s;
+    box-shadow:
+    0 10px 30px rgba(255, 64, 129, 0.3);
+}
+
+.play-btn:hover{
+    transform:scale(1.08);
+}
+
+.progress-wrapper{
+    margin-top:35px;
+}
+
+.progress-bar{
+    width:100%;
+    height:8px;
+    border-radius:20px;
+    background:rgba(0, 0, 0, 0.05);
+    overflow:hidden;
+}
+
+.progress{
+    width:0%;
+    height:100%;
+    border-radius:20px;
+    background:linear-gradient(
+    to right,
+    #ff7ebb,
+    #b172ff
+    );
+    transition:width .2s linear;
+}
+
+.time{
+    margin-top:12px;
+    display:flex;
+    justify-content:space-between;
+    color: var(--text-muted);
+    font-size:14px;
+}
+
+.bottom-text{
+    margin-top:25px;
+    padding:18px;
+    border-radius:20px;
+    background:rgba(255, 255, 255, 0.45);
+    border:1px solid rgba(255, 182, 193, 0.3);
+    color: var(--text-color);
+    font-size:16px;
+}
+
+/* Mobile Responsiveness */
+@media(max-width:768px){
+    nav{
+        padding:20px 6%;
+    }
+
+    nav ul{
+        gap:16px;
+    }
+
+    nav ul li a{
+        font-size:14px;
+    }
+
+    .music-card{
+        padding:28px;
+        border-radius:28px;
+    }
+
+    .image-wrapper{
+        width:190px;
+        height:190px;
+    }
+
+    .song-title{
+        font-size:26px;
+    }
+
+    .song-subtitle{
+        font-size:14px;
+    }
+
+    .play-btn{
+        width:75px;
+        height:75px;
+        font-size:28px;
+    }
+
+    .bottom-text{
+        font-size:14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<nav>
+    <div class="logo">Forever ♡</div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Music.html">Video </a></li>
+        <li><a href="our book.html">Our Book</a></li>
+        <li><a href="Plans.html">Reasons to Love You</a></li>
+        <li><a href="Messages Page.html">Messages</a></li>
+    </ul>
+</nav>
+
+<section class="container">
+
+    <div class="music-card">
+
+        <div class="music-header">
+            🎵
+            <span>Celebration Music</span>
+        </div>
+
+        <div class="line"></div>
+
+        <div class="image-wrapper">
+            <div class="glow"></div>
+
+            <img
+            src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1000"
+            class="profile-img"
+            id="cover"
+            alt="Romantic music cover"
+            />
+        </div>
+
+        <h1 class="song-title">
+            A Song For You
+        </h1>
+
+        <p class="song-subtitle">
+            For my favourite human in the world ❤️
+        </p>
+
+        <div class="controls">
+            <button class="play-btn" id="playBtn">
+                ▶
+            </button>
+        </div>
+
+        <div class="progress-wrapper">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+
+            <div class="time">
+                <span id="current">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+        </div>
+
+        <div class="bottom-text">
+            Every beat of this song is a small
+            “I love you” just for you 💜
+        </div>
+
+    </div>
+
+</section>
+
+<audio id="audio" preload="metadata">
+    <source src="WhatsApp Audio 2026-05-25 at 7.18.13 PM.mp4" type="audio/mp3">
+    Your browser does not support the audio element.
+</audio>
+
+<script>
+const playBtn = document.getElementById("playBtn");
+const audio = document.getElementById("audio");
+const cover = document.getElementById("cover");
+const progress = document.getElementById("progress");
+const current = document.getElementById("current");
+const duration = document.getElementById("duration");
+
+let isPlaying = false;
+
+playBtn.addEventListener("click", () => {
+    if(!isPlaying){
+        audio.play();
+        playBtn.innerHTML = "❚❚";
+        cover.classList.add("rotating");
+        isPlaying = true;
+    }else{
+        audio.pause();
+        playBtn.innerHTML = "▶";
+        cover.classList.remove("rotating");
+        isPlaying = false;
+    }
+});
+
+audio.addEventListener("loadedmetadata", () => {
+    duration.textContent = formatTime(audio.duration);
+});
+
+audio.addEventListener("timeupdate", () => {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progress.style.width = percent + "%";
+    current.textContent = formatTime(audio.currentTime);
+});
+
+audio.addEventListener("ended", () => {
+    playBtn.innerHTML = "▶";
+    cover.classList.remove("rotating");
+    progress.style.width = "0%";
+    isPlaying = false;
+});
+
+function formatTime(seconds){
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+/* Falling Heart Particles System */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const particles = [];
+
+class Particle{
+    constructor(){
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.radius = Math.random() * 3 + 2; // Adjusted size for sweet heart shape visibility
+        this.speed = Math.random() * 0.9 + 0.4;
+        this.opacity = Math.random() * 0.5 + 0.4;
+    }
+
+    update(){
+        this.y += this.speed;
+        if(this.y > canvas.height){
+            this.y = -10;
+            this.x = Math.random() * canvas.width;
+        }
+    }
+
+    draw(){
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.beginPath();
+        let size = this.radius;
+        
+        // Beautifully proportioned canvas heart shape path
+        ctx.moveTo(0, -size);
+        ctx.bezierCurveTo(-size * 1.5, -size * 1.5, -size * 2, size * 0.5, 0, size * 1.8);
+        ctx.bezierCurveTo(size * 2, size * 0.5, size * 1.5, -size * 1.5, 0, -size);
+        ctx.closePath();
+
+        ctx.fillStyle = `rgba(255, 134, 172, ${this.opacity})`;
+        ctx.fill();
+        ctx.restore();
+    }
+}
+
+for(let i = 0; i < 120; i++){
+    particles.push(new Particle());
+}
+
+function animate(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        p.update();
+        p.draw();
+    });
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>

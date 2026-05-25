@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Our Book - Cute Birthday Pink</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    font-family:'Poppins',sans-serif;
+    background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 45%, #ffb3c1 100%);
+    color:#4a2831;
+    position:relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* =========================
+   FALLING STARS (NOW FLOATING HEARTS)
+========================= */
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    padding:24px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:999;
+    backdrop-filter:blur(20px);
+    background:rgba(255, 255, 255, 0.3);
+    border-bottom:1px solid rgba(255, 182, 193, 0.4);
+}
+
+.logo{
+    font-family:'Cormorant Garamond', serif;
+    font-size:34px;
+    font-weight:700;
+    letter-spacing:2px;
+    color: #ff4d6d;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:36px;
+}
+
+nav ul li a{
+    text-decoration:none;
+    color:#5c3d46;
+    font-weight:500;
+    transition:.3s;
+    position:relative;
+}
+
+nav ul li a::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-8px;
+    width:0;
+    height:2px;
+    background:linear-gradient(
+    to right,
+    #ff758f,
+    #ff4d6d
+    );
+    transition:.4s;
+}
+
+nav ul li a:hover::after{
+    width:100%;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.container{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    padding-top:100px;
+}
+
+.top-title{
+    text-align:center;
+    margin-bottom:45px;
+}
+
+.top-title h1{
+    font-family:'Cormorant Garamond', serif;
+    font-size:65px;
+    letter-spacing:3px;
+    color: #ff4d6d;
+}
+
+.top-title p{
+    color:#ff758f;
+    letter-spacing:6px;
+    margin-top:10px;
+    font-weight: 600;
+}
+
+/* =========================
+   BOOK
+========================= */
+
+.book-wrapper{
+    perspective:3000px;
+}
+
+.book{
+    width:340px;
+    height:480px;
+    position:relative;
+    transform-style:preserve-3d;
+    cursor:pointer;
+}
+
+.cover{
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:12px;
+    transform-origin:left;
+    transition:1.5s cubic-bezier(.77,0,.175,1);
+    transform-style:preserve-3d;
+    z-index:5;
+}
+
+.book.open .cover{
+    transform:rotateY(-160deg);
+}
+
+.front{
+    position:absolute;
+    inset:0;
+    border-radius:14px;
+    background: linear-gradient(145deg, #ff758f, #ff4d6d);
+
+    border:2px solid rgba(255,255,255,.2);
+    box-shadow:
+    0 15px 35px rgba(255, 77, 109, 0.3),
+    0 30px 50px rgba(0,0,0,.15);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    color: white;
+}
+
+.front::before{
+    content:'';
+    position:absolute;
+    inset:14px;
+    border:1px solid rgba(255,255,255,.3);
+    border-radius:8px;
+}
+
+.front h2{
+    font-family:'Cormorant Garamond', serif;
+    font-size:45px;
+    letter-spacing:6px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.front span{
+    margin-top:18px;
+    color:#fff0f3;
+    font-size:20px;
+    font-weight: 500;
+}
+
+.book-shadow{
+    width:340px;
+    height:480px;
+    position:absolute;
+    border-radius:12px;
+    background:#ffccd5;
+    transform:translateZ(-10px);
+    box-shadow:
+    25px 0 40px rgba(255, 154, 162, 0.2);
+}
+
+.page{
+    position:absolute;
+    inset:0;
+    border-radius:14px;
+    background: rgba(255, 255, 255, 0.7);
+
+    backdrop-filter:blur(15px);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+
+    border:1px solid rgba(255, 182, 193, 0.5);
+}
+
+/* =========================
+   SLIDER
+========================= */
+
+.slider{
+    width:100%;
+    height:100%;
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.slide{
+    position:absolute;
+    width:90%;
+    height:85%;
+    opacity:0;
+    transform:scale(.9);
+    transition:.8s ease;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:
+    0 10px 40px rgba(0,0,0,.15);
+}
+
+.slide.active{
+    opacity:1;
+    transform:scale(1);
+}
+
+.slide img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.controls{
+    margin-top:40px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.btn{
+    width:70px;
+    height:70px;
+    border:none;
+    border-radius:50%;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 182, 193, 0.5);
+
+    color:#ff4d6d;
+    font-size:28px;
+    cursor:pointer;
+    transition:.3s;
+    backdrop-filter:blur(10px);
+    box-shadow: 0 5px 15px rgba(255, 154, 162, 0.15);
+}
+
+.btn:hover{
+    transform:translateY(-4px);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 20px rgba(255, 77, 109, 0.2);
+}
+
+.counter{
+    font-size:18px;
+    color:#5c3d46;
+    font-weight: 600;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    nav{
+        padding:20px 5%;
+    }
+
+    nav ul{
+        gap:14px;
+    }
+
+    nav ul li a{
+        font-size:13px;
+    }
+
+    .top-title h1{
+        font-size:42px;
+    }
+
+    .top-title p{
+        font-size:13px;
+    }
+
+    .book{
+        width:270px;
+        height:380px;
+    }
+
+    .book-shadow{
+        width:270px;
+        height:380px;
+    }
+
+    .front h2{
+        font-size:34px;
+    }
+
+    .btn{
+        width:60px;
+        height:60px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<nav>
+
+    <div class="logo">
+        Forever ♡
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Music.html">Video</a></li>
+        <li><a href="our book.html">Our Book</a></li>
+        <li><a href="Plans.html">Reasons to Love You</a></li>
+        <li><a href="Messages Page.html">Messages</a></li>
+    </ul>
+
+</nav>
+
+<section class="container">
+
+    <div class="top-title">
+        <h1>Our Book</h1>
+        <p>FAV MEMORIES</p>
+    </div>
+
+    <div class="book-wrapper">
+
+        <div class="book" id="book">
+
+            <div class="book-shadow"></div>
+
+            <div class="cover">
+
+                <div class="front">
+                    <h2>OUR MOMENTS</h2>
+                    <span>💜 Click To Open</span>
+                </div>
+
+            </div>
+
+            <div class="page">
+
+                <div class="slider">
+
+                    <div class="slide active">
+                        <img src="WhatsApp Image 2026-05-25 at 7.39.21 PM.jpeg" alt="Romantic couple dancing">
+                    </div>
+
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 8.25.40 PM (1).jpeg" alt="Couple holding hands">
+                    </div>
+
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 8.25.40 PM (2).jpeg" alt="Candlelit romantic dinner">
+                    </div>
+
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 8.25.40 PM.jpeg" alt="Candlelit romantic dinner">
+                    </div>
+
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 7.39.21 PM (1).jpeg" alt="Couple enjoying a sunset">
+                    </div>
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 7.39.21 PM.jpeg" alt="Couple holding hands">
+                    </div>
+
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 7.39.22 PM (1).jpeg" alt="Candlelit romantic dinner">
+                    </div>
+
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 7.39.22 PM.jpeg" alt="Candlelit romantic dinner">
+                    </div>
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 8.08.33 PM.jpeg" alt="Couple holding hands">
+                    </div>
+
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 8.08.34 PM (1).jpeg" alt="Candlelit romantic dinner">
+                    </div>
+
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 8.08.34 PM.jpeg" alt="Couple enjoying a sunset">
+                    </div>
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 8.08.35 PM.jpeg" alt="Couple holding hands">
+                    </div>
+
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 8.25.39 PM (1).jpeg" alt="Candlelit romantic dinner">
+                    </div>
+
+                    <div class="slide">
+                        <img src="WhatsApp Image 2026-05-25 at 8.25.39 PM.jpeg" alt="Couple enjoying a sunset">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="controls">
+
+        <button class="btn" id="prev">
+            ←
+        </button>
+
+        <span class="counter">
+            <span id="currentSlide">
+                1
+            </span>
+            / 14
+        </span>
+
+        <button class="btn" id="next">
+            →
+        </button>
+
+    </div>
+
+</section>
+
+<script>
+
+/* ====================
+BOOK OPEN
+==================== */
+
+const book =
+document.getElementById("book");
+
+let opened = false;
+
+book.addEventListener("click",()=>{
+
+    if(!opened){
+        book.classList.add("open");
+        opened = true;
+    }
+
+});
+
+/* ====================
+SLIDER
+==================== */
+
+const slides =
+document.querySelectorAll(".slide");
+
+const nextBtn =
+document.getElementById("next");
+
+const prevBtn =
+document.getElementById("prev");
+
+const counter =
+document.getElementById("currentSlide");
+
+let index = 0;
+
+function updateSlider(){
+
+    slides.forEach(slide=>{
+        slide.classList.remove("active");
+    });
+
+    slides[index].classList.add("active");
+
+    counter.innerHTML =
+    index + 1;
+}
+
+nextBtn.addEventListener("click",()=>{
+
+    index++;
+
+    if(index >= slides.length){
+        index = 0;
+    }
+
+    updateSlider();
+
+});
+
+prevBtn.addEventListener("click",()=>{
+
+    index--;
+
+    if(index < 0){
+        index = slides.length - 1;
+    }
+
+    updateSlider();
+
+});
+
+/* ====================
+HEART PARTICLES (UPWARD FLOATING)
+==================== */
+
+const canvas =
+document.getElementById("stars");
+
+const ctx =
+canvas.getContext("2d");
+
+canvas.width =
+window.innerWidth;
+
+canvas.height =
+window.innerHeight;
+
+let particles = [];
+const heartColors = [
+    "rgba(255, 77, 109, ", 
+    "rgba(255, 143, 163, ", 
+    "rgba(255, 182, 193, ", 
+    "rgba(255, 200, 214, "
+];
+
+class Heart{
+
+    constructor(){
+
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.radius = Math.random() * 3 + 2;
+        this.speed = Math.random() * 0.8 + 0.3;
+        this.opacity = Math.random() * 0.5 + 0.3;
+        this.colorBase = heartColors[Math.floor(Math.random() * heartColors.length)];
+    }
+
+    draw(){
+        ctx.save();
+        ctx.font = `${this.radius * 5 + 5}px sans-serif`;
+        ctx.fillStyle = `${this.colorBase}${this.opacity})`;
+        ctx.fillText("♥", this.x, this.y);
+        ctx.restore();
+    }
+
+    update(){
+        this.y -= this.speed;
+
+        if(this.y < -20){
+            this.y = canvas.height + 20;
+            this.x = Math.random() * canvas.width;
+            this.opacity = Math.random() * 0.5 + 0.3;
+        }
+    }
+}
+
+for(let i=0;i<120;i++){
+    particles.push(new Heart());
+}
+
+function animate(){
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(heart=>{
+        heart.update();
+        heart.draw();
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener(
+"resize",()=>{
+
+canvas.width =
+window.innerWidth;
+
+canvas.height =
+window.innerHeight;
+
+});
+
+</script>
+
+</body>
+</html>

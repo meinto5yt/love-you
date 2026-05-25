@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Birthday Video | Cute Birthday Pink</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    font-family:'Poppins',sans-serif;
+    background: linear-gradient(135deg,#fff0f3 0%,#ffccd5 45%,#ffb3c1 100%);
+    color:#4a2831;
+    overflow-x:hidden;
+    position:relative;
+}
+
+/* =========================
+BACKGROUND HEARTS
+========================= */
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+}
+
+/* =========================
+NAVBAR
+========================= */
+
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    padding:24px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    backdrop-filter:blur(18px);
+    background:rgba(255,255,255,.3);
+    border-bottom:1px solid rgba(255,182,193,.4);
+    z-index:999;
+}
+
+.logo{
+    font-family:'Cormorant Garamond',serif;
+    font-size:34px;
+    font-weight:700;
+    color:#ff4d6d;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:30px;
+}
+
+nav ul li a{
+    text-decoration:none;
+    color:#5c3d46;
+    font-weight:500;
+    position:relative;
+}
+
+nav ul li a::after{
+    content:'';
+    position:absolute;
+    bottom:-8px;
+    left:0;
+    width:0;
+    height:2px;
+    background:linear-gradient(to right,#ff758f,#ff4d6d);
+    transition:.4s;
+}
+
+nav ul li a:hover::after{
+    width:100%;
+}
+
+/* =========================
+MAIN
+========================= */
+
+.container{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:120px 20px 40px;
+}
+
+.music-card{
+    width:100%;
+    max-width:850px;
+    border-radius:40px;
+    padding:50px;
+    text-align:center;
+
+    background:
+    linear-gradient(
+    145deg,
+    rgba(255,255,255,.75),
+    rgba(255,255,255,.45)
+    );
+
+    border:1px solid rgba(255,182,193,.5);
+
+    backdrop-filter:blur(22px);
+
+    box-shadow:
+    0 20px 60px rgba(255,154,162,.25);
+
+    position:relative;
+    overflow:hidden;
+}
+
+.music-card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+
+    background:
+    radial-gradient(
+    circle at top left,
+    rgba(255,182,193,.2),
+    transparent 40%
+    );
+
+    pointer-events:none;
+}
+
+.music-header{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    color:#ff4d6d;
+    font-weight:600;
+    letter-spacing:2px;
+    margin-bottom:30px;
+}
+
+.line{
+    width:100%;
+    height:1px;
+    background:rgba(255,182,193,.4);
+    margin-bottom:40px;
+}
+
+/* =========================
+VIDEO
+========================= */
+
+.video-wrapper{
+    display:flex;
+    justify-content:center;
+    margin-bottom:30px;
+}
+
+.birthday-video{
+    width:100%;
+    max-width:420px;
+    border-radius:35px;
+
+    border:4px solid rgba(255,255,255,.8);
+
+    box-shadow:
+    0 10px 40px rgba(255,105,180,.25),
+    0 0 60px rgba(255,182,193,.15);
+
+    transition:.4s;
+}
+
+.birthday-video:hover{
+    transform:scale(1.02);
+}
+
+/* =========================
+TEXT
+========================= */
+
+.song-title{
+    font-size:56px;
+    color:#ff4d6d;
+    font-family:'Cormorant Garamond',serif;
+}
+
+.song-subtitle{
+    margin-top:12px;
+    color:#ff758f;
+    font-size:18px;
+    font-weight:500;
+}
+
+.birthday-message{
+    margin-top:35px;
+    background:rgba(255,255,255,.6);
+    border:1px solid rgba(255,182,193,.3);
+    border-radius:30px;
+    padding:35px;
+    line-height:2;
+}
+
+/* =========================
+PLAYER
+========================= */
+
+.controls{
+    margin-top:35px;
+}
+
+.play-btn{
+    width:90px;
+    height:90px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+    135deg,
+    #ff758f,
+    #ff4d6d
+    );
+
+    color:white;
+    font-size:34px;
+
+    box-shadow:
+    0 10px 25px rgba(255,77,109,.3);
+
+    transition:.3s;
+}
+
+.play-btn:hover{
+    transform:scale(1.08);
+}
+
+.progress-wrapper{
+    margin-top:35px;
+}
+
+.progress-bar{
+    width:100%;
+    height:8px;
+    border-radius:30px;
+    background:rgba(255,182,193,.3);
+    overflow:hidden;
+}
+
+.progress{
+    width:0%;
+    height:100%;
+    border-radius:30px;
+    background:
+    linear-gradient(to right,#ff758f,#ff4d6d);
+}
+
+.time{
+    margin-top:12px;
+    display:flex;
+    justify-content:space-between;
+    color:#ff758f;
+    font-weight:500;
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    nav{
+        padding:20px 5%;
+    }
+
+    nav ul{
+        gap:15px;
+    }
+
+    nav ul li a{
+        font-size:13px;
+    }
+
+    .music-card{
+        padding:30px 20px;
+    }
+
+    .song-title{
+        font-size:42px;
+    }
+
+    .birthday-message{
+        font-size:15px;
+    }
+
+    .birthday-video{
+        max-width:100%;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<nav>
+
+    <div class="logo">
+        Forever ♡
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Music.html">Video</a></li>
+        <li><a href="our book.html">Our Book</a></li>
+        <li><a href="Plans.html">Reasons to Love You</a></li>
+        <li><a href="Messages Page.html">Messages</a></li>
+    </ul>
+
+</nav>
+
+<section class="container">
+
+    <div class="music-card">
+
+        <div class="music-header">
+            🎂
+            <span>Birthday Video For My Love</span>
+        </div>
+
+        <div class="line"></div>
+
+        <div class="video-wrapper">
+
+            <video
+            id="birthdayVideo"
+            class="birthday-video">
+
+                <source
+                src="WhatsApp Video 2026-05-25 at 7.52.34 PM.mp4"
+                type="video/mp4">
+
+            </video>
+
+        </div>
+
+        <h1 class="song-title">
+            Happy Birthday My Love 💖
+        </h1>
+
+        <p class="song-subtitle">
+            A little birthday memory for the most beautiful soul ✨
+        </p>
+
+        <div class="controls">
+
+            <button
+            class="play-btn"
+            id="playBtn">
+                ▶
+            </button>
+
+        </div>
+
+        <div class="progress-wrapper">
+
+            <div class="progress-bar">
+                <div
+                class="progress"
+                id="progress">
+                </div>
+            </div>
+
+            <div class="time">
+                <span id="current">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+
+        </div>
+
+        <div class="birthday-message">
+            Happy Birthday to the person who makes my world brighter,
+            softer, and more beautiful 💖
+            <br><br>
+            Every moment with you feels magical.
+            I hope your day is filled with love,
+            happiness, and unforgettable memories ✨
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+/* ====================
+VIDEO PLAYER
+==================== */
+
+const video =
+document.getElementById("birthdayVideo");
+
+const playBtn =
+document.getElementById("playBtn");
+
+const progress =
+document.getElementById("progress");
+
+const current =
+document.getElementById("current");
+
+const duration =
+document.getElementById("duration");
+
+let isPlaying = false;
+
+playBtn.addEventListener(
+"click",()=>{
+
+if(!isPlaying){
+
+video.play();
+
+playBtn.innerHTML =
+"❚❚";
+
+isPlaying = true;
+
+}else{
+
+video.pause();
+
+playBtn.innerHTML =
+"▶";
+
+isPlaying = false;
+}
+
+});
+
+video.addEventListener(
+"loadedmetadata",()=>{
+
+duration.textContent =
+formatTime(
+video.duration
+);
+
+});
+
+video.addEventListener(
+"timeupdate",()=>{
+
+const percent =
+(video.currentTime /
+video.duration) * 100;
+
+progress.style.width =
+percent + "%";
+
+current.textContent =
+formatTime(
+video.currentTime
+);
+
+});
+
+video.addEventListener(
+"ended",()=>{
+
+playBtn.innerHTML =
+"▶";
+
+isPlaying = false;
+
+});
+
+function formatTime(seconds){
+
+const mins =
+Math.floor(seconds / 60);
+
+const secs =
+Math.floor(seconds % 60);
+
+return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+/* ====================
+HEART PARTICLES
+==================== */
+
+const canvas =
+document.getElementById("particles");
+
+const ctx =
+canvas.getContext("2d");
+
+canvas.width =
+window.innerWidth;
+
+canvas.height =
+window.innerHeight;
+
+const particles = [];
+
+class Particle{
+
+constructor(){
+
+this.x =
+Math.random() * canvas.width;
+
+this.y =
+Math.random() * canvas.height;
+
+this.size =
+Math.random() * 15 + 8;
+
+this.speed =
+Math.random() * 1 + .3;
+
+this.opacity =
+Math.random() * .5 + .3;
+}
+
+draw(){
+
+ctx.save();
+
+ctx.globalAlpha =
+this.opacity;
+
+ctx.font =
+`${this.size}px serif`;
+
+ctx.fillText(
+"♡",
+this.x,
+this.y
+);
+
+ctx.restore();
+}
+
+update(){
+
+this.y -= this.speed;
+
+if(this.y < -20){
+
+this.y =
+canvas.height + 20;
+
+this.x =
+Math.random() *
+canvas.width;
+}
+}
+}
+
+for(let i=0;i<120;i++){
+
+particles.push(
+new Particle()
+);
+}
+
+function animate(){
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+particles.forEach(p=>{
+
+p.update();
+p.draw();
+});
+
+requestAnimationFrame(
+animate
+);
+}
+
+animate();
+
+window.addEventListener(
+"resize",()=>{
+
+canvas.width =
+window.innerWidth;
+
+canvas.height =
+window.innerHeight;
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Messages | Cute Birthday Pink</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    font-family:'Poppins',sans-serif;
+    background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 45%, #ffb3c1 100%);
+    color:#4a2831;
+    position:relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* ========================
+   PARTICLES BACKGROUND
+======================== */
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+}
+
+/* ========================
+   NAVBAR
+======================== */
+
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    padding:24px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    backdrop-filter:blur(18px);
+    background:rgba(255, 255, 255, 0.3);
+    border-bottom:1px solid rgba(255, 182, 193, 0.4);
+    z-index:999;
+}
+
+.logo{
+    font-family:'Cormorant Garamond',serif;
+    font-size:34px;
+    font-weight:700;
+    letter-spacing:2px;
+    color: #ff4d6d;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:34px;
+}
+
+nav ul li a{
+    color:#5c3d46;
+    text-decoration:none;
+    position:relative;
+    font-weight: 500;
+}
+
+nav ul li a::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-8px;
+    width:0;
+    height:2px;
+    background:linear-gradient(
+    to right,
+    #ff758f,
+    #ff4d6d
+    );
+    transition:.4s;
+}
+
+nav ul li a:hover::after{
+    width:100%;
+}
+
+/* ========================
+   MAIN
+======================== */
+
+.container{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:120px 20px 50px;
+}
+
+.message-card{
+    width:100%;
+    max-width:850px;
+    min-height:620px;
+    border-radius:40px;
+
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+
+    border:1px solid rgba(255, 182, 193, 0.5);
+    backdrop-filter:blur(20px);
+
+    overflow:hidden;
+    position:relative;
+
+    box-shadow: 0 20px 60px rgba(255, 154, 162, 0.25);
+}
+
+/* ========================
+   OVERLAY
+======================== */
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background: linear-gradient(145deg, #fff0f3 0%, #ffccd5 100%);
+
+    z-index:10;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+
+    cursor:pointer;
+
+    transition:1s ease;
+}
+
+.overlay.hide{
+    opacity:0;
+    visibility:hidden;
+}
+
+.overlay h1{
+    font-family:'Cormorant Garamond', serif;
+    font-size:65px;
+    margin-bottom:20px;
+    color: #ff4d6d;
+}
+
+.overlay p{
+    color:#ff758f;
+    letter-spacing:3px;
+    font-size:18px;
+    font-weight: 500;
+}
+
+.click-icon{
+    margin-top:30px;
+    font-size:40px;
+    animation:float 2s infinite ease-in-out;
+}
+
+@keyframes float{
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+/* ========================
+   CONTENT
+======================== */
+
+.content{
+    padding:50px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+}
+
+.image-box{
+    width:230px;
+    height:230px;
+    border-radius:50%;
+    overflow:hidden;
+    border:4px solid rgba(255, 255, 255, 0.8);
+
+    box-shadow:
+    0 0 30px rgba(255, 114, 182, 0.3),
+    0 0 50px rgba(255, 182, 193, 0.2);
+
+    transform:scale(.7);
+    opacity:0;
+
+    transition:1s ease;
+}
+
+.image-box.show{
+    transform:scale(1);
+    opacity:1;
+}
+
+.image-box img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.title{
+    margin-top:35px;
+    font-size:48px;
+    font-family:'Cormorant Garamond', serif;
+    color: #ff4d6d;
+    font-weight: 700;
+    opacity:0;
+    transform:translateY(20px);
+    transition:1s ease .3s;
+}
+
+.title.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.message-box{
+    margin-top:30px;
+    width:100%;
+    max-width:700px;
+
+    padding:35px;
+    border-radius:30px;
+
+    background: rgba(255, 255, 255, 0.6);
+
+    border:1px solid rgba(255, 182, 193, 0.3);
+
+    min-height:220px;
+
+    text-align:left;
+
+    font-size:18px;
+    line-height:2;
+    color:#5c3d46;
+
+    opacity:0;
+    transform:translateY(30px);
+    transition:1s ease .6s;
+}
+
+.message-box.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.cursor{
+    color:#ff4d6d;
+    font-weight: bold;
+    animation:blink .8s infinite;
+}
+
+@keyframes blink{
+    50%{
+        opacity:0;
+    }
+}
+
+/* ========================
+   MOBILE
+======================== */
+
+@media(max-width:768px){
+
+    nav{
+        padding:20px 5%;
+    }
+
+    nav ul{
+        gap:14px;
+    }
+
+    nav ul li a{
+        font-size:13px;
+    }
+
+    .message-card{
+        min-height:720px;
+    }
+
+    .overlay h1{
+        font-size:44px;
+        text-align:center;
+    }
+
+    .overlay p{
+        font-size:15px;
+        text-align:center;
+    }
+
+    .content{
+        padding:30px 22px;
+    }
+
+    .image-box{
+        width:180px;
+        height:180px;
+    }
+
+    .title{
+        font-size:38px;
+    }
+
+    .message-box{
+        font-size:15px;
+        padding:28px;
+        line-height:1.9;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<nav>
+
+    <div class="logo">
+        Forever ♡
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Music.html">Video</a></li>
+        <li><a href="our book.html">Our Book</a></li>
+        <li><a href="Plans.html">Reasons to Love You</a></li>
+        <li><a href="Messages Page.html">Messages</a></li>
+    </ul>
+
+</nav>
+
+<section class="container">
+
+    <div class="message-card">
+
+        <div class="overlay" id="overlay">
+
+            <h1>
+                From ur love 💜
+            </h1>
+
+            <p>
+                CLICK TO REVEAL YOUR MESSAGE
+            </p>
+
+            <div class="click-icon">
+                👇
+            </div>
+
+        </div>
+
+        <div class="content">
+
+            <div class="image-box" id="imageBox">
+                <img src="WhatsApp Image 2026-05-25 at 7.39.21 PM (1).jpeg" alt="Romantic couple">
+            </div>
+
+            <h1 class="title" id="title">
+                To My Favourite Person
+            </h1>
+
+            <div class="message-box" id="messageBox">
+                <span id="typewriter"></span>
+                <span class="cursor">|</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+/* =======================
+TYPEWRITER MESSAGE
+======================= */
+
+const romanticMessage =
+`Happy Birthday, my love 🎂💜
+
+I honestly don't think words will ever be enough to explain how much you mean to me.
+
+Today is special because the most beautiful soul I know came into this world, and I can't even describe how grateful I am that life brought you to me.
+
+You somehow make ordinary days feel magical and hard days feel softer. Your smile feels like comfort, your voice feels like peace, and your presence feels like home.
+
+On your birthday, I just want you to know how deeply loved and appreciated you are. You deserve all the happiness, love, success, and beautiful moments this world can give.
+
+Thank you for existing, for staying, and for being exactly who you are — because who you are is already perfect to me.
+
+No matter what happens, I will always choose you — over and over again.
+
+I hope this year brings you endless smiles, unforgettable memories, and everything your heart wishes for.
+
+And I hope I get to stay beside you through all of it.
+
+Happy Birthday to my favourite person in the whole world.
+
+I love you more than words could ever explain. 💜🎉`;
+
+const overlay = document.getElementById("overlay");
+const imageBox = document.getElementById("imageBox");
+const title = document.getElementById("title");
+const messageBox = document.getElementById("messageBox");
+const typewriter = document.getElementById("typewriter");
+
+overlay.addEventListener("click",()=>{
+
+    overlay.classList.add("hide");
+
+    imageBox.classList.add("show");
+    title.classList.add("show");
+    messageBox.classList.add("show");
+
+    setTimeout(() => {
+        typeWriterEffect();
+    },1000);
+
+});
+
+let i = 0;
+
+function typeWriterEffect(){
+
+    if(i < romanticMessage.length){
+
+        typewriter.innerHTML += romanticMessage.charAt(i);
+        i++;
+        setTimeout(typeWriterEffect, 35);
+    }
+}
+
+/* =======================
+HEART PARTICLES (UPWARD FLOATING)
+======================= */
+
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const particles = [];
+// Array of heart shades to keep it dynamic and cute
+const heartColors = [
+    "rgba(255, 77, 109, ", 
+    "rgba(255, 143, 163, ", 
+    "rgba(255, 182, 193, ", 
+    "rgba(255, 200, 214, "
+];
+
+class Particle{
+
+    constructor(){
+        this.x = Math.random() * canvas.width;
+        // Start particles across the whole screen initially, then spawn from bottom
+        this.y = Math.random() * canvas.height;
+        // Radius acts as font size scaling factor
+        this.radius = Math.random() * 3 + 2;
+        this.speed = Math.random() * 0.8 + 0.3;
+        this.opacity = Math.random() * 0.5 + 0.3;
+        this.colorBase = heartColors[Math.floor(Math.random() * heartColors.length)];
+    }
+
+    draw(){
+        ctx.save();
+        ctx.font = `${this.radius * 5 + 5}px sans-serif`;
+        ctx.fillStyle = `${this.colorBase}${this.opacity})`;
+        ctx.fillText("♥", this.x, this.y);
+        ctx.restore();
+    }
+
+    update(){
+        // Make hearts drift upwards gently
+        this.y -= this.speed;
+
+        // Reset to bottom if it floats past the top
+        if(this.y < -20){
+            this.y = canvas.height + 20;
+            this.x = Math.random() * canvas.width;
+            this.opacity = Math.random() * 0.5 + 0.3;
+        }
+    }
+}
+
+for(let i=0; i<120; i++){
+    particles.push(new Particle());
+}
+
+function animate(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(particle=>{
+        particle.update();
+        particle.draw();
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener("resize",()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+</script>
+
+</body>
+</html>
